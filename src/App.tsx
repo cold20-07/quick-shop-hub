@@ -1,34 +1,39 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { CartProvider } from '@/contexts/CartContext'
+import { MainLayout } from '@/components/layout/MainLayout'
+import Home from '@/pages/Index'
+import Shops from '@/pages/shops'
+import Shop from '@/pages/shop/[id]'
+import ShopRegister from '@/pages/shop/register'
+import ShopDashboard from '@/pages/shop/dashboard'
+import DeliveryDashboard from '@/pages/delivery/dashboard'
+import AdminDashboard from '@/pages/admin/dashboard'
+import Cart from '@/pages/cart'
+import Auth from '@/pages/auth'
+import OrderTracking from '@/pages/orders/[id]'
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import ShopPage from "./pages/ShopPage";
-import CartPage from "./pages/CartPage";
-import AuthPage from "./pages/AuthPage";
-import NotFound from "./pages/NotFound";
-
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/shop/:shopId" element={<ShopPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+export default function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <CartProvider>
+          <Routes>
+            <Route path="/" element={<MainLayout><></></MainLayout>}>
+              <Route index element={<Home />} />
+              <Route path="shops" element={<Shops />} />
+              <Route path="shop/:id" element={<Shop />} />
+              <Route path="shop/register" element={<ShopRegister />} />
+              <Route path="shop/dashboard" element={<ShopDashboard />} />
+              <Route path="delivery/dashboard" element={<DeliveryDashboard />} />
+              <Route path="admin/dashboard" element={<AdminDashboard />} />
+              <Route path="cart" element={<Cart />} />
+              <Route path="auth" element={<Auth />} />
+              <Route path="orders/:id" element={<OrderTracking />} />
+            </Route>
+          </Routes>
+        </CartProvider>
+      </AuthProvider>
+    </Router>
+  )
+}
